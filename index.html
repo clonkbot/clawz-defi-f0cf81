@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><text y='24' font-size='24'>🦀</text></svg>" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CLAWZ - Self-Sustaining DeFi</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=JetBrains+Mono:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+      :root {
+        --claw-red: #E53935;
+        --claw-orange: #FF6B35;
+        --claw-gold: #FFB800;
+        --dark-bg: #0A0A0F;
+        --dark-card: #12121A;
+        --dark-border: #1E1E2A;
+        --accent-glow: rgba(255, 107, 53, 0.3);
+      }
+      
+      * {
+        scrollbar-width: thin;
+        scrollbar-color: var(--claw-orange) var(--dark-bg);
+      }
+      
+      body {
+        font-family: 'JetBrains Mono', monospace;
+        background: var(--dark-bg);
+        color: #E5E5E5;
+      }
+      
+      .pixel-font {
+        font-family: 'Press Start 2P', cursive;
+      }
+      
+      .heading-font {
+        font-family: 'Space Grotesk', sans-serif;
+      }
+      
+      @keyframes float {
+        0%, 100% { transform: translateY(0) rotate(0deg); }
+        50% { transform: translateY(-10px) rotate(2deg); }
+      }
+      
+      @keyframes pulse-glow {
+        0%, 100% { box-shadow: 0 0 20px var(--accent-glow), 0 0 40px rgba(255, 107, 53, 0.1); }
+        50% { box-shadow: 0 0 30px var(--accent-glow), 0 0 60px rgba(255, 107, 53, 0.2); }
+      }
+      
+      @keyframes scan-line {
+        0% { transform: translateY(-100%); }
+        100% { transform: translateY(100vh); }
+      }
+      
+      @keyframes data-flow {
+        0% { stroke-dashoffset: 100; }
+        100% { stroke-dashoffset: 0; }
+      }
+      
+      @keyframes shimmer {
+        0% { background-position: -200% 0; }
+        100% { background-position: 200% 0; }
+      }
+      
+      .animate-float {
+        animation: float 4s ease-in-out infinite;
+      }
+      
+      .animate-pulse-glow {
+        animation: pulse-glow 2s ease-in-out infinite;
+      }
+      
+      .shimmer-text {
+        background: linear-gradient(90deg, var(--claw-orange), var(--claw-gold), var(--claw-orange));
+        background-size: 200% 100%;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        animation: shimmer 3s linear infinite;
+      }
+      
+      .card-glow {
+        background: linear-gradient(135deg, rgba(229, 57, 53, 0.1), rgba(255, 107, 53, 0.05));
+        border: 1px solid rgba(255, 107, 53, 0.2);
+        backdrop-filter: blur(10px);
+      }
+      
+      .crt-overlay {
+        pointer-events: none;
+        position: fixed;
+        inset: 0;
+        background: repeating-linear-gradient(
+          0deg,
+          rgba(0, 0, 0, 0.1) 0px,
+          rgba(0, 0, 0, 0.1) 1px,
+          transparent 1px,
+          transparent 2px
+        );
+        z-index: 9999;
+      }
+      
+      .noise-bg {
+        position: fixed;
+        inset: 0;
+        opacity: 0.03;
+        background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+        pointer-events: none;
+        z-index: 1;
+      }
+      
+      .pixel-border {
+        box-shadow: 
+          4px 0 0 0 var(--claw-orange),
+          -4px 0 0 0 var(--claw-orange),
+          0 4px 0 0 var(--claw-orange),
+          0 -4px 0 0 var(--claw-orange);
+      }
+      
+      .gradient-border {
+        background: linear-gradient(var(--dark-card), var(--dark-card)) padding-box,
+                    linear-gradient(135deg, var(--claw-red), var(--claw-orange), var(--claw-gold)) border-box;
+        border: 2px solid transparent;
+      }
+      
+      input[type="range"] {
+        -webkit-appearance: none;
+        appearance: none;
+        background: transparent;
+      }
+      
+      input[type="range"]::-webkit-slider-track {
+        height: 8px;
+        background: var(--dark-border);
+        border-radius: 4px;
+      }
+      
+      input[type="range"]::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        appearance: none;
+        width: 20px;
+        height: 20px;
+        background: var(--claw-orange);
+        border-radius: 2px;
+        cursor: pointer;
+        margin-top: -6px;
+        box-shadow: 0 0 10px var(--accent-glow);
+      }
+      
+      .flow-line {
+        stroke-dasharray: 8 4;
+        animation: data-flow 2s linear infinite;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
